@@ -2,11 +2,15 @@
 //
 
 #include "stdafx.h"
-#include <iostream>
+#include "Tester.h"
+#include <algorithm>
+#include <vector>
+
 
 int main()
 {
-
+	Tester tester;
+	tester.test_streams(1, 1);
     return 0;
 }
 
