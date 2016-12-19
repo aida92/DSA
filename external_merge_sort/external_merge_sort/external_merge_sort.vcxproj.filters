@@ -27,6 +27,9 @@
     <ClInclude Include="Stream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sorter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -36,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Stream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sorter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
