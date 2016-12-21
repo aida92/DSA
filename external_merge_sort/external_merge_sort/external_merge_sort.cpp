@@ -10,7 +10,12 @@
 int main()
 {
 	Tester tester;
-	tester.test_streams(1, 1);
+	for (unsigned k = 1; k <= 30; k++)
+	{
+		tester.test_streams(k, 5000000);
+		std::cout << k << std::endl;
+	}
+	std::cout << "done";
     return 0;
 }
 

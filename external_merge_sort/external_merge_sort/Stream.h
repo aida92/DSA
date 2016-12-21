@@ -88,7 +88,7 @@ class IStream3 :
 	public iStream
 {
 public:
-	static const int B = 2;	// size of the internal buffer:
+	static const int B = 1024;	// size of the internal buffer:
 							// represents the number of elements (32bit integers) 
 							// that can fit into the buffer.
 	IStream3();
@@ -121,7 +121,7 @@ class IStream4 :
 	public iStream
 {
 public:
-	static const int B = 30;	// size of the mapping portion:
+	static const int B = 1024;	// size of the mapping portion:
 								// represents the number of elements which can be mapped into the memory.
 	IStream4();
 	~IStream4();
@@ -232,7 +232,7 @@ class OStream3 :
 	public oStream
 {
 public:
-	static const int B = 2; // size of the internal buffer:
+	static const int B = 1024; // size of the internal buffer:
 							// represents the number of elements (32bit integers) 
 							// that can fit into the buffer.
 
@@ -264,7 +264,7 @@ class OStream4 :
 	public oStream
 {
 public:
-	static const int B = 2;		// size of the mapping portion:
+	static const int B = 1024;		// size of the mapping portion:
 								// represents the number of elements which can be mapped into the memory.
 	OStream4();
 	bool create(const std::string & filename);

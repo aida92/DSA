@@ -108,3 +108,7 @@ void Tester::test_streams(unsigned k, unsigned N)
 	out << std::endl << std::endl;
 	out.close();
 }
+
+void Tester::test_external_merge()
+{
+}

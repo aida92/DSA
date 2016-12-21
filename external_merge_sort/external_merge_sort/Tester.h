@@ -11,6 +11,8 @@ public:
 
 	void test_streams(unsigned k, unsigned N);
 
+	void test_external_merge();
+
 private:
 	template<class OSTREAM>
 	void test_ostreams(unsigned k, unsigned N);

@@ -67,7 +67,6 @@ bool IStream2::open(const std::string & filename)
 {
 	// open for reading in binary mode
 	if ((stream = fopen(filename.c_str(), "rb")) == NULL)
-		//if (fopen_s(&stream, filename.c_str(), "r+b") != 0)
 	{
 		std::cerr << "Error " << GetLastError() << " occurred opening the input file." << std::endl;
 		return false;
@@ -154,7 +153,8 @@ void IStream3::fill_buffer()
 //
 //--------------------------------------------------------------------------------------------
 
-IStream4::IStream4() : index(0), buffersize(B * sizeof(int32_t)), file_map_start(0), dwFileMapSize(0)
+IStream4::IStream4() : dwFileSize(0), dwFileMapSize(0), dwMapViewSize(0), dwFileMapStart(0),
+index(0), buffersize(B * sizeof(int32_t)), file_map_start(0)
 {
 }
 
@@ -210,7 +210,7 @@ int32_t IStream4::read_next()
 			unmap_portion();
 		map_next_portion();
 	}
-	pData = (char *)lpMapAddress + index;
+	pData = (char *)lpMapAddress + index % dwSysGran;
 	index += sizeof(int32_t);
 	return *(int *)pData;
 }
@@ -408,7 +408,8 @@ void OStream3::flush_buffer()
 //
 //--------------------------------------------------------------------------------------------
 
-OStream4::OStream4() : index(0), buffersize(B * sizeof(int32_t)), file_map_start(0), dwFileMapSize(0)
+OStream4::OStream4() : dwFileSize(0),  dwFileMapSize(0), dwMapViewSize(0), dwFileMapStart(0),
+index(0), buffersize(B * sizeof(int32_t)), file_map_start(0)
 {}
 
 
@@ -445,8 +446,10 @@ void OStream4::write(int32_t n)
 			unmap_portion();
 		map_next_portion();
 	}
-	pData = (char *)lpMapAddress + index;
-	memcpy_s(pData, sizeof(int), &n, sizeof(int));
+	pData = (char *)lpMapAddress + index % dwSysGran;
+	errno_t err = memcpy_s(pData, sizeof(int), &n, sizeof(int));
+	if (err)
+		std::cout << err << std::endl;
 	index += sizeof(int32_t);
 }
 
@@ -500,12 +503,12 @@ void OStream4::map_next_portion()
 	// To calculate where to start the file mapping, round down the
 	// offset of the data into the file to the nearest multiple of the
 	// system allocation granularity.
+	
 	dwFileMapStart = (file_map_start / dwSysGran) * dwSysGran;
 	// Calculate the size of the file mapping view.
 	dwMapViewSize = (file_map_start % dwSysGran) + buffersize;
 	// And the size of the file mapping object.
 	dwFileMapSize = file_map_start + buffersize;
-
 	// Map the view.
 	lpMapAddress = MapViewOfFile(hMapFile,	// handle to
 											// mapping object
