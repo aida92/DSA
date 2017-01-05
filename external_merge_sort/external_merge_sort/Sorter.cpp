@@ -7,21 +7,27 @@ Sorter::Sorter(const unsigned long M, const unsigned long d, const std::string &
 
 
 Sorter::~Sorter()
-{
-}
+{}
 
 void Sorter::sort_file()
 {
-	read_file();
+	read_file(ITYPE::IBUFF, OTYPE::OBUFF);
+
+	if (streams.size() == 1)
+	{
+		// If the entire file can fit into the available memory, there is no need to do any merging.
+		// The output file should be renamed to the provided output file name.
+		rename("out0.txt", output.c_str());
+		return;
+	}
 
 	while (streams.size() > d)
-	{
 		m_sort();
-	}
+	// Once there is less than d streams left, merge them all into the final output.
 	d = streams.size();
 	m_sort(true);
 
-	clean_up();
+	//clean_up();
 }
 
 void Sorter::read_file(ITYPE itype, OTYPE otype)
@@ -64,7 +70,6 @@ void Sorter::read_file(ITYPE itype, OTYPE otype)
 		if (j >= M)
 		{
 			flush_stream(h);
-
 			i++;
 			j = 1;
 		}
@@ -73,12 +78,12 @@ void Sorter::read_file(ITYPE itype, OTYPE otype)
 
 		h.push(n);
 	}
-
 }
 
 void Sorter::flush_stream(std::priority_queue<int32_t, std::vector<int32_t>, std::greater<int32_t> > & h)
 {
-	OStream1 out;
+	OStream3 out;
+	// Create a new temporary stream
 	char file[100];
 	sprintf_s(file, "out%d.txt", tmp_streams++);
 	out.create(file);
@@ -97,8 +102,9 @@ void Sorter::m_sort(bool final)
 	std::priority_queue<Node> h;
 	std::vector<unsigned> indexes(d);
 
-	std::vector<IStream1> str(d);
-	OStream1 out;
+	std::vector<IStream3> str(d);
+	OStream3 out;
+	// Create a new temporary stream
 	char file[200];
 	if (final)
 		out.create(output);

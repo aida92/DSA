@@ -222,7 +222,7 @@ int32_t IStream4::read_next()
 void IStream4::map_next_portion()
 {
 	// Create a file mapping object for the file
-	h_map_file = CreateFileMapping(h_file, NULL, PAGE_READONLY, 0, 0, NULL);
+	h_map_file = CreateFileMapping(h_file, NULL, PAGE_READONLY, 0, 0, NULL);									
 
 	if (h_map_file == NULL)
 	{
@@ -239,7 +239,7 @@ void IStream4::map_next_portion()
 	if (left_in_file < (long)buffersize)
 		buffersize = left_in_file; // no need to map the full buffer, since less than that is left to read
 
-								   // Calculate where the map file can start.
+	// Calculate where the map file can start.
 	dw_file_map_start = (file_map_start / dw_sys_gran) * dw_sys_gran;
 	// Calculate the size of the file mapping view.
 	dw_map_view_size = (file_map_start % dw_sys_gran) + buffersize;
@@ -463,7 +463,7 @@ void OStream4::map_next_portion()
 	if (SetEndOfFile(h_file) == 0)
 		std::cerr << "Error " << GetLastError() << " occured extending the output file." << std::endl;
 
-	h_map_file = CreateFileMapping(h_file, NULL, PAGE_READWRITE, 0, 0, NULL);									// name of mapping object
+	h_map_file = CreateFileMapping(h_file, NULL, PAGE_READWRITE, 0, 0,	NULL);									// name of mapping object
 
 	if (h_map_file == NULL)
 	{

@@ -3,13 +3,13 @@
 #include <queue>
 #include <functional>
 
-#define OUTPUT_TYPE OStream1
-#define INPUT_TYPE IStream1
 
-// M = size  of internal memory available
-// N = size of original file
-// d = nb. of streams to be sorted in one pass
-
+/**
+Structure used to represent the nodes in the heap:
+	value = integer read from the stream
+	index = index of that stream 
+Default ordering of Nodes is by value in ascending order.
+*/
 struct Node
 {
 public:
@@ -43,14 +43,12 @@ public:
 	}
 };
 
-/*
-class used to
-split a file into streams of max size M
-store the references to those streams in a queue
-sort the streams in internal memory
-merge d by d streams until only one is left
+/**
+The class used to split a file into streams of maximum size M.
+It stores the references to those streams in a queue,
+sorts the streams in internal memory and finally
+merge d by d streams until only one is left.
 */
-
 class Sorter
 {
 public:
@@ -62,24 +60,30 @@ public:
 
 	void sort_file();
 
-
-private:
-	// read the input, and split into smaller ones
-	void read_file(ITYPE itype = READ, OTYPE otype = WRITE);
-	// sort one stream of size M
-	void flush_stream(std::priority_queue<int32_t, std::vector<int32_t>, std::greater<int32_t> > & h);
-	// merge d streams. put the result to the end of the queue
-	void m_sort(bool final = false);
-	// 
+	// delete the temporary streams. 
 	void clean_up();
-
-
-	std::string input, output;
-	unsigned long M, N, d;
-
+private:
+	/** 
+	Reads the input, and split into smaller ones
+	*/
+	void read_file(ITYPE itype = READ, OTYPE otype = WRITE);
+	/** 
+	sort one stream of size M
+	*/
+	void flush_stream(std::priority_queue<int32_t, std::vector<int32_t>, std::greater<int32_t> > & h);
+	/** 
+	Merges d streams, putting the result to the end of the queue.
+	If final = TRUE, then creates output file, not a temporary one.
+	*/
+	void m_sort(bool final = false);
+	
+	std::string input, output;	// names of the input/output files
+	unsigned long M, N, d;		// M = size  of internal memory available
+								// N = size of original file
+								// d = nb. of streams to be sorted in one pass
 	ITYPE itype;
 	OTYPE otype;
 
-	std::queue<	std::string> streams;
-	unsigned tmp_streams;
+	std::queue<	std::string> streams;	// queue holding the references to the temporary streams
+	unsigned tmp_streams;				// number of temporary streams created
 };

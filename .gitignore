@@ -250,3 +250,17 @@ ModelManifest.xml
 /external_merge_sort/external_merge_sort/test_24.txt
 /external_merge_sort/external_merge_sort/test_22.txt
 /external_merge_sort/external_merge_sort/_bla.txt
+/external_merge_sort/external_merge_sort/inputs
+/external_merge_sort/external_merge_sort/input_10.txt
+*.txt
+/external_merge_sort/external_merge_sort/test_merge_sort.csv
+/external_merge_sort/external_merge_sort/test_merge_sortMM.csv
+/external_merge_sort/external_merge_sort/test_sort.csv
+/external_merge_sort/external_merge_sort/test_sort_1.csv
+/external_merge_sort/external_merge_sort/test_sort_1024.csv
+/external_merge_sort/external_merge_sort/test_sort_128.csv
+/external_merge_sort/external_merge_sort/test_sort_2048.csv
+/external_merge_sort/external_merge_sort/test_sort_512.csv
+/external_merge_sort/external_merge_sort/test_streams_1024.csv
+/external_merge_sort/external_merge_sort/test_streams_16384.csv
+/external_merge_sort/external_merge_sort/test_streams_3_512.csv
