@@ -90,7 +90,7 @@ void Tester::test_external_merge(unsigned N, unsigned M, unsigned d)
 {
 	std::ofstream out;
 	out.open("test_sort.csv", std::ios::app);
-	//out << "N=" << N << ",,M=" << M << ",,d=" << d << std::endl;
+	out << "N=" << N << ",,M=" << M << ",,d=" << d << std::endl;
 
 	char file[40];
 	sprintf_s(file, "inputs/input_%d.txt", N);

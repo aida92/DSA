@@ -4,7 +4,7 @@
 #include <ctime>
 #include <random>
 
-static const int TEST_AMOUNT = 1;
+static const int TEST_AMOUNT = 5;
 
 class Tester
 {

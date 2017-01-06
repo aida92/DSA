@@ -264,3 +264,5 @@ ModelManifest.xml
 /external_merge_sort/external_merge_sort/test_streams_1024.csv
 /external_merge_sort/external_merge_sort/test_streams_16384.csv
 /external_merge_sort/external_merge_sort/test_streams_3_512.csv
+/external_merge_sort/external_merge_sort/#test_sort.csv
+/external_merge_sort/external_merge_sort/test_sortT.csv

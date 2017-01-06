@@ -10,18 +10,16 @@
 int main()
 {
 	// BUFSIZ = 512 =  128 ints
-
+	getchar();
 	unsigned sizes[] = { 10000, 100000, 1000000, 10000000, 100000000 };
-	unsigned memory[] = { 256, 512, 1024, 2048 };
-	unsigned ds[] = { 5, 10, 20 };
+	unsigned memory[] = { 1024, 4096, 16384 };
+	unsigned ds[] = { 10, 50, 100 };
 	Tester tester;
-
-	tester.test_streams(5, 5);
 
 	for (unsigned M : memory)
 		for (unsigned N : sizes)
 			for (unsigned d : ds)
-				//tester.test_external_merge(N, M, d);
+				tester.test_external_merge(N, M, d);
 		
 	//
 	std::cout << "salsa! <3";
@@ -30,10 +28,6 @@ int main()
 	unsigned sizes[] = { 1024, 16384, 32768, 1000000, 5000000, 10000000 };
 	for (unsigned N : sizes)
 	{
-		std::ofstream out;
-		out.open("test_streams.csv", std::ios::app);
-		out << "N=" << N << std::endl;
-		out.close();
 		for (unsigned k = 1; k <= 30; k++)
 		{
 			tester.test_streams(k, N);

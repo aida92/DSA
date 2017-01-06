@@ -3,15 +3,16 @@
 
 
 Sorter::Sorter(const unsigned long M, const unsigned long d, const std::string & input, const std::string & output)
-	: M(M), d(d), input(input), output(output), tmp_streams(0) {}
+	: M(M), d(d), input(input), output(output), tmp_streams(0), v(0) {}
 
 
 Sorter::~Sorter()
 {}
 
+
 void Sorter::sort_file()
 {
-	read_file(ITYPE::IBUFF, OTYPE::OBUFF);
+	read_file();
 
 	if (streams.size() == 1)
 	{
@@ -26,38 +27,19 @@ void Sorter::sort_file()
 	// Once there is less than d streams left, merge them all into the final output.
 	d = streams.size();
 	m_sort(true);
-
-	//clean_up();
 }
 
-void Sorter::read_file(ITYPE itype, OTYPE otype)
+
+void Sorter::read_file()
 {
-	iStream* in;
-	switch (itype)
-	{
-	case READ:
-		in = new IStream1();
-		break;
-	case FREAD:
-		in = new IStream2();
-		break;
-	case IBUFF:
-		in = new IStream3();
-		break;
-	case IMMAP:
-		in = new IStream4();
-		break;
-	default:
-		return;
-	}
+	IStream3 in;
+	in.open(input);
 
-	in->open(input);
-
-	std::priority_queue<int32_t, std::vector<int32_t>, std::greater<int32_t> > h;
-
+	//std::priority_queue<int32_t, std::vector<int32_t>, std::greater<int32_t> > h;
+	//std::vector<int32_t> v;
 	int n;
 	unsigned i = 0, j = 0;
-
+	/*
 	while (true)
 	{
 		n = in->read_next();
@@ -78,8 +60,29 @@ void Sorter::read_file(ITYPE itype, OTYPE otype)
 
 		h.push(n);
 	}
-}
+	*/
+	while (true)
+	{
+		n = in.read_next();
+		if (in.end_of_stream())
+		{
+			if (v.size() > 0)
+				flush_stream();
+			break;
+		}
+		if (j >= M)
+		{
+			flush_stream();
+			i++;
+			j = 1;
+		}
+		else
+			j++;
 
+		v.push_back(n);
+	}
+}
+/*
 void Sorter::flush_stream(std::priority_queue<int32_t, std::vector<int32_t>, std::greater<int32_t> > & h)
 {
 	OStream3 out;
@@ -93,6 +96,23 @@ void Sorter::flush_stream(std::priority_queue<int32_t, std::vector<int32_t>, std
 		out.write(h.top());
 		h.pop();
 	}
+	out.close();
+	streams.push(file);
+}*/
+
+void Sorter::flush_stream()
+{
+	OStream3 out;
+	// Create a new temporary stream
+	char file[100];
+	sprintf_s(file, "out%d.txt", tmp_streams++);
+	out.create(file);
+
+	for (int32_t i : v)
+	{
+		out.write(i);
+	}
+	v.clear();
 	out.close();
 	streams.push(file);
 }
@@ -159,7 +179,7 @@ void Sorter::m_sort(bool final)
 
 void Sorter::clean_up()
 {
-	for (int i = 0; i < tmp_streams; i++)
+	for (unsigned i = 0; i < tmp_streams; i++)
 	{
 		char file[200];
 		sprintf_s(file, "out%d.txt", i);
