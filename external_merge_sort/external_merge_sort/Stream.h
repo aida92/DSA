@@ -237,7 +237,7 @@ class OStream3 :
 	public oStream
 {
 public:
-	static const int B = 16384; // size of the internal buffer:
+	static const int B = 1024;	// size of the internal buffer:
 								// represents the number of elements (32bit integers) 
 								// that can fit into the buffer.
 
